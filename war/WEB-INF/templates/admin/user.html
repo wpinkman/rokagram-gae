@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+#include("admin/head.html")
+</head>
+<body>
+#parse("admin/navbar.html")
+    <div class="container">
+    #if ($user.profile_picture)
+	<img width="64" height="64" src="$user.profile_picture" alt="$user.profile_picture" class="img-circle pull-left">
+	<form class="pull-right" method="post"  role="form">
+		<input class="btn btn-warning btn-sm" type="submit" name="action" value="Refresh" />
+	</form>
+	#end
+	<table class="table table-bordered table-condensed">
+	#if($user.id)
+		<caption>User - #if($edit-url)<a href="$edit-url">$user.id</a>#else$user.id#end ( $user.username )</caption>
+	
+		<tr>
+			<th>modified</th>
+			<td>$user.modified</td>
+		</tr>
+		<tr>
+			<th>added</th>
+			<td>$user.added</td>
+		</tr>
+    #else
+    	<h4>NOT FOUND</h4>
+	#end
+		<tr>
+			<th>username</th>
+			<td>
+				<a target="_external" class="btn btn-xs btn-instagram" href="http://instagram.com/$user.username">$user.username</a>
+				<a class="btn btn-xs btn-danger" href="/love?from=getrokagram&to=$user.username&admin">$user.username</a>
+			</td>
+		</tr>
+	#if($user.id)
+		<tr>
+			<th>full_name</th>
+			<td>$user.full_name</td>
+		</tr>
+		<tr>
+			<th>access_token</th>
+			<td>$!user.access_token</td>
+		</tr>
+		<tr>
+			<td colspan="2"><a href="https://api.instagram.com/v1/users/$user.id/?access_token=$!user.access_token">https://api.instagram.com/v1/users/$user.id/?access_token=$!user.access_token</a></td>
+		</tr>
+	#end
+	</table>
+	
+#if($user.id)
+#set($omit-user=true)
+#parse("admin/log-table.html")    
+#end
+    </div>
+    
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

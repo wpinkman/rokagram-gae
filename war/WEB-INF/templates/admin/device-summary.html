@@ -1,0 +1,49 @@
+<style>
+table {
+	border-collapse:collapse;
+}
+
+table, td, th {
+	border:1px solid black;
+}
+
+th {
+	text-align: right;
+}
+</style>
+<table>
+	<caption>Roku - <a href="http://www.rokagram.com/admin/devices/$device.deviceId">$device.deviceId</a></caption>
+	<tr>
+		<th>model</th>
+		<td>$device.model</td>
+	</tr>
+	<tr>
+		<th>displayMode</th>
+		<td>$device.displayMode</td>
+	</tr>
+	<tr>
+		<th>channel version</th>
+		<td>$!device.channelVersion</td>
+	</tr>
+	
+	<tr>
+		<th>firmware</th>
+		<td>$device.firmware</td>
+	</tr>
+	<tr>
+		<th>location</th>
+		<td>$device.location</td>
+	</tr>
+	<tr>
+		<th>users</th>
+		<td>#foreach($user in $device.loadUsers())<a style="padding-right: 5px" target="_external" href="http://instagram.com/$user.username">$user.username</a>#end</td>
+	</tr>
+	<tr>
+		<th>email</th>
+		<td>$!device.email</td>
+	</tr>
+	<tr>
+		<th>starts</th>
+		<td>$!device.starts</td>
+	</tr>
+</table>

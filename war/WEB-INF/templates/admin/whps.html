@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+#include("admin/head.html")
+<style>
+.btn {
+	margin-left:20px;
+	float:left;
+}
+</style>
+
+</head>
+<body>
+#set($page="whp")
+#parse("admin/navbar.html")
+    <div class="container">
+	<div class="row">
+		<form method="post" >
+			<input type="hidden" name="action" value="tumble"/>
+			<input style="float:left;" type="text" name="tumblrid" value=""/>
+			<button type="submit" class="btn btn-warning">tumble</button>
+		</form>
+		<form method="post" >
+			<input type="hidden" name="action" value="insta"/>
+			<button type="submit" class="btn btn-warning">insta</button>
+		</form>
+		<form method="post" >
+			<input type="hidden" name="action" value="featured"/>
+			<button type="submit" class="btn btn-warning">let it rip!</button>
+		</form>
+		<form method="post" >
+			<input type="hidden" name="action" value="interate"/>
+			<button type="submit" class="btn btn-warning">debug</button>
+		</form>
+	</div>
+    
+	<table class="table table-bordered table-condensed">
+		<caption>Weekend Hashtag Projects</caption>
+		#foreach($whp in $whps)
+		<tr>
+			<td>
+				<a href="/admin/whp/$whp.tag">$whp.tag</a>
+				<span class="badge">$whp.featuredPostCount</span>
+			</td>
+			<td>
+			#if($whp.announceInsta.thumb)
+				<img height="100" src="$whp.announceInsta.thumb"/>
+			#end
+			</td>
+			<td>
+			#if($whp.featureInsta.thumb)
+				<img height="100" src="$whp.featureInsta.thumb"/>
+			#end
+			</td>
+			<td>
+				<table class="table table-bordered table-condensed">
+					<tr>
+						<th>announce</th>
+						<td>$!whp.announceDateHuman</td>
+						<td>
+						#if($whp.announceTumblr.post_url)
+							<a href="$whp.announceTumblr.post_url">tumblr</a>
+						#end
+						#if($whp.announceInsta.link)
+							<a href="$whp.announceInsta.link">instagram</a>
+						#end
+						</td>
+					</tr>
+					<tr>
+						<th>feature</th>
+						<td>$!whp.featureDateHuman</td>
+						<td>
+						#if($whp.featureTumblr.post_url)
+							<a href="$whp.featureTumblr.post_url">tumblr</a>
+						#end
+						#if($whp.featureInsta.link)
+							<a href="$whp.featureInsta.link">instagram</a>
+						#end
+						</td>
+					</tr>
+					
+				</table>
+			</td>
+		</tr>
+		#end
+	</table>
+
+    </div><!-- /.container -->
+    
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

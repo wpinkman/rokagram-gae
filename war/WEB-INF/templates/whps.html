@@ -1,0 +1,79 @@
+ <!DOCTYPE html>
+<html>
+<head>
+#set($title="WHPgallery - A Gallery of Weekend Hashtag Projects") 
+
+#set($description="Instagram has been running Weekend Hashtag Projects every weekend for several years. This is a gallery of all
+projects to date and the featured posts from each.")
+<title>$title</title>
+<meta name="description" content="$description">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta property="og:url" content="http://rokagram.com/whp"/>
+<meta property="og:title" content="$title">
+<meta property="og:description" content="$description" />
+#if($ogimage)
+<meta property="og:image" content="$ogimage" />
+#end
+
+<title>$title</title>
+<meta name="description" content="$description">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<link rel="icon" type="image/ico" href="/favicon.ico?v=2">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"> -->
+<style>
+.thumb {
+	margin-bottom: 10px;
+}
+
+</style>
+
+</head>
+<body>
+
+	<div class="container">
+<!-- 	<ol class="breadcrumb">
+	  <li><a href="/">Rokagram</a></li>
+	  <li class="active"><a href="/whp">whp</a></li>
+	</ol>	
+ -->	
+	<div class="page-header center-block"></div>
+	<h1 class="text-center">Weekend Hashtag Project Gallery</h1>
+	
+	<p>Several years ago, Instagram started the Weekend Hash Project. Every Friday a WHP is announced. 
+	Photos are taken over the weekend, and on Monday some are featured. So far, you humble 
+	curator-bot has found $numwhp projects. Click on one that looks interesting.</p>
+	<hr>
+	
+	
+	<div id="container-fluid">
+		<div class="row">
+		
+		#foreach($whp in $whps)
+			<div class="thumb col-lg-3 col-md-4 col-xs-6">
+				<a class="thumbnail" href="/whp/$whp.tag"><img class="img-responsive" src="$whp.announceInsta.lowres"/></a>
+			</div>
+		#end
+		
+		</div>
+		
+	</div>
+	</div>
+
+
+<!-- 	<script src="http://code.jquery.com/jquery.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+ --> 
+#if($production)
+#include("ga.html")	
+#end
+ </body>
+</html>

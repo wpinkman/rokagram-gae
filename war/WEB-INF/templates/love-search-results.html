@@ -1,0 +1,51 @@
+<style>
+.userthumb {
+	float: left;
+	padding-top:10px;
+	padding-right:10px;
+	min-height:100px;
+	width:100px;
+	
+}
+
+.userthumb img {
+	width: 100%;
+}
+
+.truncate {
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height:20px;
+}
+.input-image {
+	width: 100px;
+	height: 100px;
+}
+.thumbnails {
+    text-align: center;
+}
+.thumbnails li {
+    width: 100px;
+    /* height: 100px; */
+    /* background: red; */
+    float: none !important; /* to overwrite the default property on the bootstrap stylesheet */
+    display: inline-block;
+    *display: inline; /* ie7 support */
+    zoom: 1;
+}
+</style>
+
+<ul  class="thumbnails list-unstyled">
+#foreach($user in $users)
+<li>
+<div class="userthumb" data-username="$user.username">
+	<a class="thumbnail user-choose" style="margin-bottom:0px;" href="#">
+		<img class="img-rounded" src="$user.profile_picture"/>
+	</a>
+	<!-- <a class="truncate user-choose" href="#">$user.username</a> -->
+</div>
+</li>
+#end
+</ul>

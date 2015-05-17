@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>$title</title>
+<meta name="description" content="$description">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta property="og:title" content="$title">
+<meta property="og:url" content="$ogurl" />
+<meta property="og:description" content="$description" />
+<meta property="og:image"
+	content="$imageSrc" />
+
+<link rel="icon" type="image/ico" href="/favicon.ico?v=2">
+
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+<link
+	href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/rokagram.css">
+<style>
+.generated-image {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.user-search-form {
+	/* 	height: auto; */
+	vertical-align: middle;
+	width: 330px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#logo-zone {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 150px;
+	width: 150px;
+	background-color: red;
+}
+#placeholder {
+
+	width:100%;
+	max-width:612px;
+	background:url('/images/loading.png?v=2');
+	background-repeat:no-repeat;
+	background-position:center; 
+	background-size:cover;
+}
+</style>
+
+</head>
+<body>
+	#if($alert)
+	<div class="container alert #if($alert.level)alert-$alert.level#end">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>$!alert.strong</strong> $!alert.message
+	</div>
+	#end
+	<div ><a href="/"><img class="center-block" src="/images/rokagram-logo-text-only.png"/></a></div>
+
+	<div class="container-fluid">
+		<div class="row text-center">
+		#if($admin)
+			<p style="padding-top:10px;padding-bottom:10px;">$toUsername</p>
+		#end
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div id="placeholder" class="center-block">
+				<img id="love-img" class="igenerated-image img-rounded center-block img-responsive" src="$imageSrc" />
+				</div>
+			</div>
+		</div>
+		<div class="row text-center" style="margin-top:10px;" >
+			<div style="width:210px;margin-right:auto;margin-left:auto;">
+				<div class="pull-left"><a id="from" data-toorfrom="from" class="thumbnail modal-opener" style="margin-right:20px;" href="#"><img width="50" src="$fromProfile" alt="unknown" ></a></div>
+				<div class="pull-left"><a id="swap" title="swap em!" href="#"><img width="50" style="margin-right:20px;" src="/images/roka-heart150x150.png" alt="unknown"></a></div>
+				<div class="pull-left"><a id="to" data-toorfrom="to" class="thumbnail modal-opener"  href="#"><img width="50"  src="$toProfile" alt="unknown" ></a></div>
+			</div>
+		</div>
+		<div class="row" >
+			<div class="text-center" style="width:300px;margin-right:auto;margin-left:auto;">
+				<div >Click on images above to change</div>
+				<div >Click heart to return the love</div>
+			</div>
+		</div>
+		  <div class="row" style="margin-top:20px;margin-bottom:20px;">
+		  	<div style="width:300px;margin-right:auto;margin-left:auto;">
+		        <a style="width:300px;margin-right:auto;margin-left:auto;" data-toggle="collapse" data-parent="#accordion" class="text-center btn btn-instagram love-imgg" href="#collapseOne">
+		          <i class="fa fa-lg fa-instagram"> Share on Instagram</i>
+		        </a>
+		    <div id="collapseOne" class="collapse love-img">
+		    	<h4>Use the Instagram application</h4>
+		        <ol >
+		        	<li>Save image to camera roll</li>
+		        	<li>Open Instagram</li>
+		        	<li>Choose image from camera roll</li>
+		        	<li>Mention @getrokagram in your caption</li>
+		        	<li>Share</li>
+		        </ol>
+		    </div>
+		    </div>
+		  </div>
+		<div class="row" >
+			<div class='shareaholic-canvas' data-app='share_buttons' data-app-id='5500472'></div>
+		</div>
+					
+		</div>
+	
+
+	<!-- Modal -->
+	<div class="modal fade" id="search-user-modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Search for user</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="search-form" class="user-search-form" role="form">
+							<input type="search" name="q" style="width:200px;margin-right:10px;"
+								class="form-control pull-left" id="query" value=""
+								placeholder="Search for Instagram user" autofocus>
+							<input id="toorfrom" type="hidden" name="toorfrom" value="from"/>
+							<button type="submit"
+								class="btn btn-rokagram ig-search">
+								<i class="fa fa-search"></i>
+							</button>
+						</form>
+					</div>
+					<div id="results"></div>
+					<div class="center-block busy-indicator" style="width: 70px;margin-top:20px;">
+						<i class="fa fa-spinner fa-spin fa-5x"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <div class='shareaholic-canvas' data-app='share_buttons' data-app-id='5500472'></div> -->	
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+	<script>jQuery.browser = {};
+	(function () {
+	    jQuery.browser.msie = false;
+	    jQuery.browser.version = 0;
+	    if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+	        jQuery.browser.msie = true;
+	        jQuery.browser.version = RegExp.$1;
+	    }
+	})();</script>
+	<script src="/js/jquery.ba-bbq.min.js"></script>
+	<script src="/js/love.js"></script>
+</body>
+</html>

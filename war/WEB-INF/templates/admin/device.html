@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+#include("admin/head.html")
+</head>
+<body>
+#parse("admin/navbar.html")
+    <div class="container">
+    <a href="/admin/devices/$device.deviceId/registry">registry</a>
+	<table class="table table-bordered table-condensed">
+		<caption>Roku - <a href="$device.editUrl">$device.deviceId</a></caption>
+		<tr>
+			<th>modified</th>
+			<td>$device.modified ($device.modifiedHuman ago)</td>
+		</tr>
+		<tr>
+			<th>added</th>
+			<td>$device.added ($device.addedHuman ago)</td>
+		</tr>
+		<tr>
+			<th>cid</th>
+			<td>$!device.cid</td>
+		</tr>
+		<tr>
+			<th>channel version</th>
+			<td>$!device.channelVersion</td>
+		</tr>
+		<tr>
+			<th>device</th>
+			<td>
+				<span class="label label-default" title="$device.model">$device.modelHuman</span>
+				<span class="label label-default" >$device.displayMode</span>
+				<span>$device.firmware</span>
+			</td>
+		</tr>
+		<tr>
+			<th>location</th>
+			<td>$device.location</td>
+		</tr>
+		<tr>
+			<th>latlong</th>
+			<td><a target="_external" href="http://maps.google.com?q=$device.latlong.latitude,$device.latlong.longitude">$device.latlong.latitude,$device.latlong.longitude</a></td>
+		</tr>
+		<tr>
+			<th>users</th>
+			<td>#foreach($user in $device.loadUsers())<a style="padding-right: 5px" href="/admin/users/$user.id">$user.username</a>#end</td>
+		</tr>
+		<tr>
+			<th>trial status</th>
+			<td>
+				<span class="label label-success">$!device.itemCode</span>
+				#if($device.expired)
+					<span class="label label-info">free</span>
+				#else
+					<span class="label label-warning">trial</span>
+				#end
+				#if($device.rescindTrial)
+					<span class="label label-danger">rescinded</span>
+				#end
+				#if($device.upgraded)
+					<span class="label label-success">upgraded</span>
+				#end
+				<span class="badge">$!device.daysElapsed days</span> #if($device.resetTrial)<span class="label label-warning">reset</span>#end
+			</td>
+		</tr>
+		<tr>
+			<th>radio</th>
+			<td>
+				#if($device.radio)
+					<span class="label label-success">enabled</span>
+				#else
+					<span class="label label-warning">disabled</span>
+				#end
+				<span class="badge">$!device.audioMinutes plays</span>
+				<span>$!device.feedFmClientId</span>
+			</td>
+		</tr>
+#if($device.email)
+		<tr>
+			<th>email</th>
+			<td>$!device.email</td>
+		</tr>
+#end
+		<tr>
+			<th>starts</th>
+			<td><span class="badge">$device.starts</span></td>
+		</tr>
+	</table>
+	<div class="row well">
+
+<form method="post" class="pull-left">
+	<input type="hidden" name="action" value="rescindTrial"/>
+	<button style="margin-left:20px;" type="submit" class="btn btn-danger btn-sm">#if( $device.rescindTrial)Un #end Rescind Trial</button>
+</form>
+
+<form method="post" >
+	<input type="hidden" name="action" value="rollupTask"/>
+	<button style="margin-left:20px;" type="submit" class="btn btn-warning btn-sm">Rollup Task</button>
+</form>
+</div>
+	
+#set($omit-device=true)
+#parse("admin/log-table.html")    
+
+    </div><!-- /.container -->
+    
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

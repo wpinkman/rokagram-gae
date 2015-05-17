@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WHPgallery - $whp.capitalizedTag</title>
+<meta name="description" content="$description">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta property="og:title" content="WHPgallery - $whp.capitalizedTag">
+<meta property="og:description" content="$description" />
+
+#if($ogimage)
+<meta property="og:image" content="$ogimage" />
+#end
+
+<link rel="icon" type="image/ico" href="/favicon.ico?v=2">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<style>
+
+#tumblrCaption {
+	margin-bottom:30px;
+}
+#tumblrCaption .intro,p:last-child {
+	display:none;
+}
+
+#tumblrCaption h1 strong  {
+	display:none;
+}
+
+
+
+.thumb {
+	margin-bottom: 30px;
+}
+
+</style>
+
+</head>
+<body>
+
+	<div class="container">
+<nav>
+  <ul class="pager">
+  #if($next)
+    <li class="next"><a href="/whp/$next.tag">$next.capitalizedTag <span aria-hidden="true">&rarr;</span></a></li>
+  #else
+  	<li class="next"><a href="/whp"><span aria-hidden="true">&uarr;</span> Gallery</a></li>
+  #end
+  #if($prev)
+    <li class="previous"><a href="/whp/$prev.tag"><span aria-hidden="true">&larr;</span> $prev.capitalizedTag</a></li>
+  #else
+  	<li class="previous"><a href="/whp"><span aria-hidden="true">&uarr;</span> Gallery</a></li>
+  #end
+    <!-- <li><a href="#"><span aria-hidden="true">&uarr;</span> Gallery</a></li> -->
+  </ul>
+</nav>	
+ 			<h3>#$whp.capitalizedTag<br><small>$!whp.announceDateHuman - $!whp.featureDateHuman</small></h3>
+		
+		<div id="tumblrCaption" class="collapse in">$whp.announceTumblr.captionHtml</div>
+
+		<div class="row">
+		#foreach($post in $whp.featuredPosts)
+			<div class="thumb col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<a href="$post.link">
+				#if($post.type == "video")
+					<video controls class="pull-left featured img-rounded img-responsive" poster="$post.standard" preload="none" src="$post.videoStandard"></video>			
+				#else
+					<img class="img-rounded featured img-responsive" src="$post.standard" />
+				#end
+				</a>
+			</div>
+		#end
+		</div>		
+		
+	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>	
+#if($production)
+#include("ga.html")	
+#end
+	
+</body>
+</html>

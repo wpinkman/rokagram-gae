@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+#include("admin/head.html")
+
+<style>
+.userthumb {
+	float: left;
+	padding-top:10px;
+	padding-right:10px;
+}
+
+.truncate {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height:20px;
+}
+
+</style>
+</head>
+<body>
+#set($page="users")
+#parse("admin/navbar.html")
+    <div class="container">
+    #if($index-start)
+		<h5>Users ($index-start - $index-end of $total-count)</h5>
+	#end
+<div class="row">
+		#foreach($user in $users)
+		#if( $user.access_token)
+		<div class="userthumb"><a href="/admin/users/$user.id">
+			<img height="150" width="150" src="$user.profile_picture" alt="$user.username" class="img-thumbnail">
+			</a>
+			<div class="truncate"><a target="_external" href="http://instagram.com/$user.username">$user.username</a></div>
+			<div class="truncate">$user.full_name</div>
+		</div>
+		#end
+		#end
+		</div>
+		
+<div class="row">
+<div style="float:left;">    
+#parse("admin/pager.html")
+</div>
+</div>
+    </div><!-- /.container -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script>
+    $(document).ready(function(){
+    	$('.img-thumbnail').error(function(){
+    		var href = $(this).parent().attr('href')
+    		console.log("error loading profile picture updating: " + href)
+    		$.post(href)
+    	});
+    });
+    </script>
+	<script	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

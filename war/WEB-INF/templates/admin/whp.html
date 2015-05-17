@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+#include("admin/head.html")
+<style>
+.btn {
+	margin-left:20px;
+	float:left;
+}
+</style>
+</head>
+<body>
+#set($page="whp")
+#parse("admin/navbar.html")
+	<div class="container">
+	<div class="row">
+		<form method="post" >
+			<input type="hidden" name="action" value="bldfp"/>
+			<button type="submit" class="btn btn-warning">Featured</button>
+		</form>
+<!-- 		<form method="post" >
+			<input type="hidden" name="action" value="bldpop"/>
+			<button  type="submit" class="btn btn-warning">Popular</button>
+		</form>
+ -->	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<h3>$!whp.announceDateHuman</h3>
+			#if($whp.announceInsta)
+			<a href="$whp.announceInsta.standard"><img src="$whp.announceInsta.lowres"/></a>
+			#end
+		</div>
+		<div class="col-md-6">
+			<h3>$!whp.featureDateHuman</h3>
+			#if($whp.featureInsta)
+			<a href="$whp.featureInsta.standard"><img src="$whp.featureInsta.lowres"/></a>
+			#end
+		</div>
+	</div>
+	<div class="row">
+	<p>$whp.announceTumblr.captionHtml</p>
+	</div>
+	<div class="row">
+		<h4>Featured Posts ($whp.featuredPostCount)</h4>
+		#foreach($post in $whp.featuredPosts)
+		<div style="float:left;">
+			<a href="$post.link"><img class="img-thumbnail" src="$post.lowres"/></a>
+		</div>
+		#end
+	
+	</div>
+	<div class="row">		
+		<table class="table table-bordered table-condensed">
+		<caption>tumblr info</caption>
+			<tr>
+				<th/>
+				<th/>
+				<th>date</th>
+				<th>link</th>
+				<th>user</th>
+				<th>shortcode</th>
+			</tr>
+			#foreach($photo in $whp.announceTumblr.photos)
+				<tr>
+					<td><h1>$velocityCount</h1></td>
+					<td><a href="$photo.standard"><img src="$photo.thumb"/></a></td>
+					<td>$whp.announceTumblr.timestampHuman<div>$whp.announceTumblr.id</div></td>
+					<td><a href="$whp.announceTumblr.post_url">blog</a></td>
+					<td>$photo.username</td>
+					<td><a href="http://instagram.com/p/$photo.shortcode">$photo.shortcode</a></td>
+				</tr>
+			#end
+			#foreach($photo in $whp.featureTumblr.photos)
+				<tr>
+					<td><h1>$velocityCount</h1></td>
+					<td><a href="$photo.standard"><img src="$photo.thumb"/></a></td>
+					<td>$whp.featureTumblr.timestampHuman<div>$whp.featureTumblr.id</div></td>
+					<td><a href="$whp.featureTumblr.post_url">blog</a></td>
+					<td>$photo.username</td>
+					<td><a href="http://instagram.com/p/$photo.shortcode">$photo.shortcode</a></td>
+				</tr>
+			#end
+		</table>
+		
+	</div>
+<!-- 	<div class="row">
+	<form method="post">
+			<input type="hidden" name="action" value="addpopular"/>
+	#foreach($post in $popularPosts)
+		<div style="float:left;">
+			<a href="$post.standard"><img class="img-thumbnail" src="$post.thumb"/></a>
+			
+			<div>
+				<input style="float:left;margin-right:5px;" type="checkbox" name="popular" value="$post.id" >
+				<span>$post.likes likes</span>
+			</div>
+			<div>$post.createdHuman</div>
+		</div>
+	#end	
+		<button type="submit" class="btn btn-warning">Submit</button>
+	</form>		
+	</div>
+ -->	
+
+
+    </div><!-- /.container -->
+    
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

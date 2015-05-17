@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Rokagram - Link</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+<style>
+.btn-instagram {
+	color: #ffffff;
+	background-color: #6f97b6;
+	border-color: #3f729b;
+}
+
+.btn-instagram:hover,.btn-instagram:focus,.btn-instagram:active,.btn-instagram.active,.open .dropdown-toggle.btn-instagram
+	{
+	color: #ffffff;
+	background-color: #5583a7;
+	border-color: #2d526f;
+}
+
+.btn-instagram:active,.btn-instagram.active,.open .dropdown-toggle.btn-instagram
+	{
+	background-image: none;
+}
+
+.btn-instagram.disabled,.btn-instagram[disabled],fieldset[disabled] .btn-instagram,.btn-instagram.disabled:hover,.btn-instagram[disabled]:hover,fieldset[disabled] .btn-instagram:hover,.btn-instagram.disabled:focus,.btn-instagram[disabled]:focus,fieldset[disabled] .btn-instagram:focus,.btn-instagram.disabled:active,.btn-instagram[disabled]:active,fieldset[disabled] .btn-instagram:active,.btn-instagram.disabled.active,.btn-instagram[disabled].active,fieldset[disabled] .btn-instagram.active
+	{
+	background-color: #6f97b6;
+	border-color: #3f729b;
+}
+</style>
+
+<style>
+body {
+	padding-top: 15px;
+}
+
+
+.outer {
+    display: table;
+    position: absolute;
+    /* height: 100%; */
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto; 
+    width: 265px;
+}
+</style>
+</head>
+<body>
+	#if($alert)
+	<div class="container alert #if($alert.level)alert-$alert.level#end">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>$!alert.strong</strong> $!alert.message
+	</div>
+	#end
+	<div ><a href="/"><img class="center-block" src="/images/rokagram-logo-text-only.png"/></a></div>
+	<div class="outer">
+		<div class="middle">
+			<div class="inner">
+				<form method="post" class="well" role="form">
+					<div class="form-group">
+						<label for="rokucode">Enter code</label> 
+						<input id="rokucode"
+							required autofocus autocomple="off" autocorrect="off" type="text"
+							name="rokucode" class="form-control"
+							style="text-transform: uppercase;width:223px;">
+						<p class="help-block">Code displayed on your TV</p>
+					</div>
+					<button id="instagram-auth" type="submit" class="btn btn-instagram"
+						data-loading-text="Linking...">
+						<i class="fa fa-instagram fa-lg"> | Link with Instagram</i>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script
+		src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+	#if($production)
+	<script>
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-47056757-1' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+	#end
+	<script>
+		$('#instagram-auth').click(function() {
+			var btn = $(this);
+			if ($('#rokucode').val().length > 0) {
+				btn.button('loading');
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+
+#if($logfilters)
+<div class="btn-toolbar" style="margin-bottom:10px;" role="toolbar">
+  <div class="btn-group btn-group-justified btn-group-sm">
+  	#foreach($logfilter in $logfilters)
+  	<a class="btn btn-default #if($logfilter.active) active #end" href="$logfilter.href" role="button">$logfilter.label</a>
+  	#end
+  </div>
+</div>
+#end
+<table class="table table-bordered table-condensed">
+#if($index-start)
+	<caption>Logs ($index-start - $index-end of $total-count)</caption>
+#end
+	<tr>
+		<th style="text-align:right;">ago</th>
+		<th>type</th>
+#if(! $omit-device)		
+		<th>device</th>
+#end
+#if(! $omit-user)
+		<th>user</th>
+#end
+		<th>location</th>
+		<th>message</th>
+		<th>instareq</th>
+	</tr>
+	#foreach($log in $logs)
+		<tr>
+			<td style="text-align:right;" title="$log.modified">$log.modifiedHuman</td>
+			<td>$!log.type</td>
+#if(! $omit-device)			
+			<td><a href="/admin/devices/$log.deviceId">$log.deviceId</a></td>
+#end
+#if(! $omit-user)
+			<td><a href="/admin/users/$log.userId">$!log.userName</a></td>
+#end
+			<td><a target="_external" href="https://maps.google.com?q=$log.geopt.latitude,$log.geopt.longitude">$log.location</a></td>
+			<td>$log.message</td>
+			<td>
+			#if($log.instaReq)
+			#if($log.instaReqApi)
+			<form action="/admin/insta">
+				<input type="hidden" name="instareq" value="$log.instaReq"/>
+				<button class="btn btn-xs">api</button>
+			</form>
+			#else
+				<a href="$log.instaReq">ireq</a>
+			#end
+			#end</td>
+		</tr>
+	#end
+</table>
+#parse("admin/pager.html")

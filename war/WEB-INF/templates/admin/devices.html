@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+#include("admin/head.html")
+</head>
+<body>
+#set($page="devices")
+#parse("admin/navbar.html")
+    <div class="container">
+    
+    
+	<table class="table table-hover table-condensed">
+	#if($index-start)
+		<caption>Devices ($index-start - $index-end of $total-count)</caption>
+	#end
+		<tr>
+			<th/>
+			<th/>
+			<th>&#9834;</th>
+			<th/>
+			<th>id</th>
+			<th><a href="/admin/devices?order=-added">add</a></th>
+			<th><a href="/admin/devices?order=-modified">mod</a></th>
+			<th><a href="/admin/devices?order=-starts">st</a></th>
+			<th><a href="/admin/devices?order=-audioMinutes">ffm</a></th>
+			<th><a href="/admin/devices?order=-daysElapsed">de</a></th>
+			<th>cver</th>
+			<th>location</th>
+		</tr>
+		#foreach($roku in $rokus)
+			#if($roku.itemCode || $roku.upgraded)
+				#set($rowClass="success")
+			#elseif ($roku.expired)
+				#set($rowClass="info")
+			#else
+				#set($rowClass="")
+			#end
+			<tr class="$!rowClass">
+				<td>#if($roku.email)<span title="$roku.email">@</span>#end</td>
+				<td>#if($roku.rescindTrial)<span>X</span>#end</td>
+				<td>#if($roku.radio) #if($roku.audioMinutes > 100)&#9835;#else&#9834;#end #end</td>
+				<td>#foreach($user in $roku.loadUsers())<a title="$user.username" style="padding-right: 5px;" href="/admin/users/$user.id"><img height="20" src="$user.profile_picture"/></a>#end</td>
+				<td><a href="/admin/devices/$roku.deviceId">$roku.deviceId</a></td>
+				<td title="$roku.added">$roku.addedHuman</td>
+				<td title="$roku.modified">$roku.modifiedHuman</td>
+				<td>$roku.starts</td>
+				<td>$roku.audioMinutes</td>
+				<td>#if($roku.daysElapsed>0)$roku.daysElapsed#end</td>
+				<td><a href="/admin/devices?channelVersion=$roku.channelVersion">$!roku.channelVersion</a></td>
+				<td title="$roku.location"><a target="_external" href="http://maps.google.com?q=$roku.latlong.latitude,$roku.latlong.longitude">$roku.locationShort</a></td>
+			</tr>
+		#end
+	</table>
+#parse("admin/pager.html")
+    </div><!-- /.container -->
+    
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

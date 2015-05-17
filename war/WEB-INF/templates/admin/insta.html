@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+#include("admin/head.html")
+</head>
+<body>
+#parse("admin/navbar.html")
+
+	<div><a href="$instareq">$instareq</a></div>
+	<div>Response Code: $responseCode</div>
+	#if($rootNode.data.isArray())
+	#foreach($inode in $rootNode.data)
+		<div class="pull-left"><a href="$inode.images.standard_resolution.url.asText()">
+			<img height="150" width="150" src="$inode.images.thumbnail.url.asText()"  class="img-thumbnail">
+			</a>
+			<div class="truncate"><a target="_external" href="http://instagram.com/$inode.user.username.asText()">$inode.user.username.asText()</a></div>
+			<!-- <div class="truncate">$inode.likes.count likes</div> -->
+			
+		</div>			
+	#end
+	#end
+	<pre class="pull-left">$!json</pre>    
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

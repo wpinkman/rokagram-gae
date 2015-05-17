@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>#include("admin/head.html")
+</head>
+<body>
+	#parse("admin/navbar.html")
+	<div class="container">
+		<h3>
+			Version <small>$version</small>
+		</h3>
+		<h5>External Links</h5>
+
+		<ul class="nav nav-pills">
+			<li><a target="_external" href="$googleAdminHref">Admin Site</a></li>
+			<li><a target="_external" href="$googleAnalyticsHref">Analytics</a></li>
+			#if($production)
+			<li><a target="_external"
+				href="https://www.google.com/webmasters/tools/dashboard?hl=en&siteUrl=http%3A%2F%2Fwww.rokagram.com%2F">
+					Webmaster Tools</a></li>
+			<li><a target="_external"
+				href="https://adwords.google.com/cm/CampaignMgmt?__u=1231793031&__c=7622099391#c.182172799.ag&app=cm">
+					Add Words</a></li>
+			<li><a target="_external"
+				href="$rokuDevHref"> Roku Developer</a></li>
+			<li><a target="_external"
+				href="http://developer.feed.fm/dashboard">FEED.FM</a></li> 
+			#end
+		</ul>
+		<h5>Admin Links</h5>
+		<ul class="nav nav-pills">
+			<li><a  href="/admin/settings">settings</a></li>
+		</ul>
+		
+		<hr>
+		<div class="jumbotron">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-sm-6">
+						<h3>Devices: $!totalDevices</h3>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<h3>Users: $!totalUsers</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+		<table class="table" style="margin-top:40px;">
+			<caption>clients</caption>
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>ebb / limit</th>
+					<th>when</th>
+				</tr>
+			</thead>
+			<tbody>
+				#foreach( $client in $clients )
+				<tr>
+					<td>$client.client_id</td>
+					<td>$client.rateLimitEbb / $client.rateLimit</td>
+					<td>$client.modifiedHuman ago</td>
+				</tr>
+				#end
+			</tbody>
+		</table>
+	</div>
+	<!-- /.container -->
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

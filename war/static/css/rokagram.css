@@ -1,0 +1,67 @@
+body {
+	padding-top: 15px;
+}
+
+.btn-rokagram {
+	color: #FFFFFF;
+	background-color: #2D3090;
+	border-color: #130269;
+}
+
+.btn-rokagram:hover,.btn-rokagram:focus,.btn-rokagram:active,.btn-rokagram.active,.open .dropdown-toggle.btn-rokagram
+	{
+	color: #FFFFFF;
+	background-color: #49247A;
+	border-color: #130269;
+}
+
+.btn-rokagram:active,.btn-rokagram.active,.open .dropdown-toggle.btn-rokagram
+	{
+	background-image: none;
+}
+
+.btn-rokagram.disabled,.btn-rokagram[disabled],fieldset[disabled] .btn-rokagram,.btn-rokagram.disabled:hover,.btn-rokagram[disabled]:hover,fieldset[disabled] .btn-rokagram:hover,.btn-rokagram.disabled:focus,.btn-rokagram[disabled]:focus,fieldset[disabled] .btn-rokagram:focus,.btn-rokagram.disabled:active,.btn-rokagram[disabled]:active,fieldset[disabled] .btn-rokagram:active,.btn-rokagram.disabled.active,.btn-rokagram[disabled].active,fieldset[disabled] .btn-rokagram.active
+	{
+	background-color: #2D3090;
+	border-color: #130269;
+}
+
+.btn-rokagram .badge {
+	color: #2D3090;
+	background-color: #FFFFFF;
+}
+
+.btn-instagram {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #5c88ab;
+  *background-color: #3f729b;
+  background-image: -moz-linear-gradient(top, #6f97b6, #3f729b);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6f97b6), to(#3f729b));
+  background-image: -webkit-linear-gradient(top, #6f97b6, #3f729b);
+  background-image: -o-linear-gradient(top, #6f97b6, #3f729b);
+  background-image: linear-gradient(to bottom, #6f97b6, #3f729b);
+  background-repeat: repeat-x;
+  border-color: #3f729b #3f729b #294a65;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff6f97b6', endColorstr='#ff3f729b', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn-instagram:hover,
+.btn-instagram:focus,
+.btn-instagram:active,
+.btn-instagram.active,
+.btn-instagram.disabled,
+.btn-instagram[disabled] {
+  color: #ffffff;
+  background-color: #3f729b;
+  *background-color: #386589;
+}
+
+.btn-instagram:active,
+.btn-instagram.active {
+  background-color: #305777 \9;
+}
+
+
