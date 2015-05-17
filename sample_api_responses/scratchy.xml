@@ -1,0 +1,10 @@
+<log>
+	<time>1397530114</time>
+	<type>slideshow</type>
+	<message>Starting show &apos;Local&apos;</message>
+	<instareq>https://api.instagram.com/v1/media/search?client_id=c54578d4ca0142358b83561647b434cd&amp;lat=25.788969&amp;lng=-80.22644&amp;distance=5000</instareq>
+	<client client_id="c54578d4ca0142358b83561647b434cd">
+		<rateLimit>5000</rateLimit>
+		<rateLimitRemaining>4785</rateLimitRemaining>
+	</client>
+</log>

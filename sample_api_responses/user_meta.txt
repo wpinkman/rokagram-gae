@@ -1,0 +1,18 @@
+{
+   "meta":{
+      "code":200
+   },
+   "data":{
+      "username":"justin_wilson_indy",
+      "bio":"Twitter - @Justin_Wilson",
+      "website":"http:\/\/www.justinwilson.co.uk",
+      "profile_picture":"http:\/\/images.ak.instagram.com\/profiles\/profile_10257727_75sq_1369532908.jpg",
+      "full_name":"Justin Wilson",
+      "counts":{
+         "media":142,
+         "followed_by":1549,
+         "follows":41
+      },
+      "id":"10257727"
+   }
+}

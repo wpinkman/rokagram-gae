@@ -1,0 +1,15 @@
+[ {
+  "shortDescriptionLine1" : "Popular",
+  "shortDescriptionLine2" : "Photos trending now",
+  "hdPosterUrl" : "http://rokugram.appspot.com/api/popular/cover.jpg?v=8er92r7p97a9otrp3qopcrikli",
+  "sdPosterUrl" : "http://rokugram.appspot.com/api/popular/cover.jpg?v=8er92r7p97a9otrp3qopcrikli",
+  "rkgApiPath" : "/popular?v=8er92r7p97a9otrp3qopcrikli",
+  "rkgTagList" : [ ]
+}, {
+  "shortDescriptionLine1" : "Local",
+  "shortDescriptionLine2" : "Photos taken near Mountain View",
+  "hdPosterUrl" : "http://rokugram.appspot.com/api/local/cover.jpg?v=eemv4fguh8mmk65orp2fb5tekj",
+  "sdPosterUrl" : "http://rokugram.appspot.com/api/local/cover.jpg?v=eemv4fguh8mmk65orp2fb5tekj",
+  "rkgApiPath" : "/local?v=eemv4fguh8mmk65orp2fb5tekj",
+  "rkgTagList" : [ ]
+} ]

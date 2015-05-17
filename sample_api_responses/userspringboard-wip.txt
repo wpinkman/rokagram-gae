@@ -1,0 +1,279 @@
+' *********************************************************
+' *********************************************************
+' **
+' **  Rokugram Channel
+' **
+' **  W. Pinkman, February 2014
+' **
+' **  Copyright (c) 2014 Fugue State, Inc., All Rights Reserved.
+' **
+' *********************************************************
+' *********************************************************
+
+Function CreateUserSpringBoardScreen(user) As Object
+	this = {
+	
+		screen: CreateObject("roSpringboardScreen"),
+		xfer: CreateObject("roUrlTransfer"),
+		port: CreateObject("roMessagePort"),
+		
+		user: user,
+		content: invalid,
+		
+		bio_loaded: false,
+		relationship_status: false,
+		
+		AddButtons: UserSpringboardAddButtons,
+		
+		HandleRelationShipResponse: UserSpringboardHandleRelationShipResponse,
+		
+		Initialize: UserSpringboardInitialize,
+		
+		shouldClose: false,
+		
+		outgoing_status: invalid,
+		
+		ProcessEvents: UserSpringboardProcessEvents,
+		Show: function() : m.screen.Show() : return invalid : end function,
+		
+		Run: function() : m.Show() : m.ProcessEvents() : return invalid : end function,
+		
+		Close: function() :  m.screen.Close() :  return m.screen : end function
+		
+	}
+
+	this.xfer.setPort(this.port)
+	this.screen.SetMessagePort(this.port)
+	
+	this.xfer.SetCertificatesFile("common:/certs/ca-bundle.crt")
+	this.xfer.InitClientCertificates()
+
+	this.screen.SetPosterStyle("rounded-square-generic")
+	this.screen.SetStaticRatingEnabled(false)
+	
+	globals = GetGlobals()
+	if globals.version >= 2.6 
+		this.screen.UseStableFocus(true)
+	end if
+	
+
+	this.Initialize()
+	
+	SetBreadcrumb(this.screen)
+	
+	AddCloseableScreen(this)
+	
+	return this
+	
+End Function
+
+Sub UserSpringboardInitialize()
+	m.screen.ClearButtons()
+	m.content = {}
+	m.content.title = m.user.username
+	if m.user.profile_picture <> invalid
+		m.content.SDPosterUrl = m.user.profile_picture
+		m.content.HDPosterUrl = m.user.profile_picture
+	end if
+	m.content.description = "loading bio ..."
+	m.screen.SetContent(m.content)
+	
+	m.instaRequest = CreateInstaRequest(m.port)
+	m.instaRequest.endpoint = "/users/" + m.user.id
+	m.instaRequest.StartGetToString()
+	
+	LogSpringBoardMessage("Browsing  " + m.user.username + "'s profile", m.instaRequest)
+	
+	if GetCurrentUser() <> invalid
+		if GetCurrentUser().id <> m.user.id
+			m.relationshipStatusRequest = CreateInstaRequest(m.port)
+			m.relationshipStatusRequest.endpoint = "/users/" + m.user.id + "/relationship"
+			m.relationshipStatusRequest.StartGetToString()
+		else
+			m.relationship_status = true
+		end if
+	end if
+	
+	m.AddButtons()
+
+End Sub
+
+Sub UserSpringboardAddButtons()
+
+	m.screen.AllowUpdates(false)
+	
+	m.screen.ClearButtons()
+	
+	m.btnIndex = 0
+	m.btnBack = m.btnIndex
+	m.screen.AddButton(m.btnBack, "Back")
+	m.btnIndex = m.btnIndex + 1
+		
+	if m.bio_loaded AND m.relationship_status
+		if m.userData <> invalid
+			if m.userData.counts.media > 0 then
+				m.btnPosts = m.btnIndex
+				m.screen.AddButton(m.btnPosts, Stri(m.userData.counts.media).Trim() + " Posts")
+				m.btnIndex = m.btnIndex + 1
+			end if
+			
+			if m.userData.counts.followed_by > 0 then
+				m.btnFollowers = m.btnIndex
+				m.screen.AddButton(m.btnFollowers, Stri(m.userData.counts.followed_by).Trim() + " Followers")
+				m.btnIndex = m.btnIndex + 1
+			end if
+			
+			if m.userData.counts.follows > 0 then
+				m.btnFollowing = m.btnIndex
+				m.screen.AddButton(m.btnFollowing, Stri(m.userData.counts.follows).Trim() + " Following")
+				m.btnIndex = m.btnIndex + 1
+			end if
+		end if
+		if GetCurrentUser().id <> m.user.id
+			if m.outgoing_status = "follows"
+				m.btnUnfollow = m.btnIndex
+				m.screen.AddButton(m.btnUnfollow, "Unfollow " + m.user.username)
+				m.btnIndex = m.btnIndex + 1
+			else if m.outgoing_status = "none"
+				m.btnFollow = m.btnIndex
+				m.screen.AddButton(m.btnFollow, "Follow " + m.user.username)
+				m.btnIndex = m.btnIndex + 1
+			else
+				print "ERROR: outgoing_status:" + m.outgoing_status + " not handled"
+			end if
+		end if
+	
+	end if
+	
+	m.screen.AllowUpdates(true)
+	
+End Sub	
+
+
+Function UserSpringboardProcessEvents()
+	
+	globals = GetGlobals()
+
+	while true 
+		if m.shouldClose exit while
+		msg = WaitForEvent(0, m.port)
+		
+        if type(msg)="roUrlEvent" then
+        	identity = msg.GetSourceIdentity()
+			if msg.GetInt() = 1 then
+					json = msg.GetString()
+					print chr(10) + tostr(identity) + "::response: code=" + Stri(msg.GetResponseCode()) + chr(10) + json + chr(10)
+				if m.instaRequest.identity = identity then
+					m.bio_loaded = true
+					if msg.GetResponseCode() = 200 then
+						
+						parsedResponse = ParseJson(json)
+			
+						m.userData = parsedResponse.data
+							
+						m.content = {}
+			
+						m.content.title = m.userData.username
+						m.content.SDPosterUrl = m.userData.profile_picture
+						m.content.HDPosterUrl = m.userData.profile_picture
+						m.content.description = m.userData.bio
+						m.content.actors = []
+						m.content.actors.Push(m.userData.full_name)
+						m.content.Categories = []
+						if m.userData.website <> invalid then
+							m.content.Categories.Push(m.userData.website)
+						end if
+	
+						m.screen.SetContent(m.content)
+						
+						RegWrite(m.userData.username, m.userData.id, SearchHistorySection("users"))
+						
+				
+					else if  msg.GetResponseCode() = 400 then
+						m.content.description = "This user is private."
+						m.screen.SetContent(m.content)
+					
+					else
+						
+						print "ERROR: unextected return code: " + Stri(msg.GetResponseCode()) + ", reason:" + msg.GetFailureReason()
+					end if
+					
+					m.AddButtons()
+				else if m.relationshipStatusRequest.identity = identity
+				
+					m.relationship_status = true
+					if msg.GetResponseCode() = 200
+						parsedResponse = ParseJson(json)
+						if parsedResponse.meta.code = 200 then
+							m.outgoing_status = parsedResponse.data.outgoing_status
+						end if
+					else
+						print "Got " + tostr(msg.GetResponseCode()) + " from friendship status request"
+					end if
+					
+					m.AddButtons()
+				end if
+			else
+				
+				print "ERROR msg.GetInt() = " + tostr(msg.GetInt())
+			end if
+		else if type(msg) = "roSpringboardScreenEvent"
+		
+			if msg.isScreenClosed() then 
+				return -1
+			else if msg.isRemoteKeyPressed()
+				ClearStillListening()
+			else if msg.isButtonInfo()
+	        	globals.radio.asp.Run()
+			else if msg.isButtonPressed() 
+				index = msg.GetIndex()
+				print "msg: "; msg.GetMessage(); "idx: "; tostr(index)
+				if index = m.btnBack then
+					m.screen.Close()
+					return 0
+				else if index = m.btnPosts
+					instashow = CreateInstaShow( "/users/" + m.user.id + "/media/recent")
+					instashow.title = m.user.username + "'s Posts"
+					instashow.Run()
+					
+				else if index = m.btnUnfollow
+					unfollowRequest = CreateInstaRequest()
+					unfollowRequest.endpoint = "/users/" + m.user.id + "/relationship"
+					unfollowRequest.AddBodyParam("action", "unfollow")
+					msg = unfollowRequest.PostWithStatus("Unfollowing ...")
+					m.HandleRelationShipResponse(msg)
+					LogSpringBoardMessage("Unfollwing  " + m.user.username)
+				else if index = m.btnFollow
+					followRequest = CreateInstaRequest()
+					followRequest.endpoint = "/users/" + m.user.id + "/relationship"
+					followRequest.AddBodyParam("action", "follow")
+					msg = followRequest.PostWithStatus("Following ...")
+					m.HandleRelationShipResponse(msg)
+					LogSpringBoardMessage("Follwing  " + m.user.username)
+				else if index = m.btnFollowing 
+					screen = CreateUsersPoster()
+					screen.RunRelations(m.user, "follows")
+					LogSpringBoardMessage("Seeing who follows " + m.user.username)
+				else if index = m.btnFollowers 
+					screen = CreateUsersPoster()
+					screen.RunRelations(m.user, "followed-by")
+					LogSpringBoardMessage("Seeing who " + m.user.username + " follows")
+				end if
+			end if
+		end if
+	end while
+End Function
+
+Sub UserSpringboardHandleRelationShipResponse(msg)
+	json = msg.GetString()
+	response = ParseJson(json)
+	' {"meta":{"code":200},"data":{"outgoing_status":"follows","target_user_is_private":false}}
+	if response.meta.code = 200 
+		if response.data.outgoing_status <> m.outgoing_status then
+			m.outgoing_status = response.data.outgoing_status
+			m.AddButtons()
+		end if
+		
+	end if
+				
+End Sub
