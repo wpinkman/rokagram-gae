@@ -35,7 +35,7 @@
 #if(! $omit-user)
 			<td><a href="/admin/users/$log.userId">$!log.userName</a></td>
 #end
-			<td><a target="_external" href="https://maps.google.com?q=$log.geopt.latitude,$log.geopt.longitude">$log.location</a></td>
+			<td>$log.location</td>
 			<td>$log.message</td>
 			<td>
 			#if($log.instaReq)

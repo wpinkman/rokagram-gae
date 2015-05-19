@@ -1,134 +1,150 @@
 package com.rokagram.entities;
 
-import com.google.appengine.api.datastore.GeoPt;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.appengine.api.datastore.Link;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
+import com.rokagram.backend.TimeFormatUtils;
 
 @Entity
-public class LogEntity extends EntityBase {
+public class LogEntity {
 
-	@Id
-	private Long id;
+   @Id
+   private Long id;
 
-	@Index
-	private String type;
+   @Index
+   private Date modified;
 
-	@Index
-	private String deviceId;
+   @Index
+   private String type;
 
-	@Index
-	private String userId;
+   @Index
+   private String deviceId;
 
-	private String location;
-	private GeoPt geopt;
+   @Index
+   private String userId;
 
-	private String userName;
+   private String location;
 
-	private String message;
-	private Link instaReq;
+   private String userName;
 
-	public String getDeviceId() {
-		return deviceId;
-	}
+   private String message;
+   private Link instaReq;
 
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
-	}
+   public String getDeviceId() {
+      return deviceId;
+   }
 
-	public String getUserId() {
-		return userId;
-	}
+   public void setDeviceId(String deviceId) {
+      this.deviceId = deviceId;
+   }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+   public String getUserId() {
+      return userId;
+   }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   public void setUserId(String userId) {
+      this.userId = userId;
+   }
 
-	public Long getId() {
-		return id;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public String getMessage() {
-		return message;
-	}
+   public void setMessage(String message) {
+      this.message = message;
+   }
 
-	public void setInstaReq(Link instaReq) {
-		this.instaReq = instaReq;
-	}
+   public String getMessage() {
+      return message;
+   }
 
-	public void setInstaReqFromString(String instaReq) {
-		if (instaReq != null) {
-			this.instaReq = new Link(instaReq);
-		} else {
-			this.instaReq = null;
-		}
-	}
+   public void setInstaReq(Link instaReq) {
+      this.instaReq = instaReq;
+   }
 
-	public Link getInstaReq() {
-		return instaReq;
-	}
+   public void setInstaReqFromString(String instaReq) {
+      if (instaReq != null) {
+         this.instaReq = new Link(instaReq);
+      } else {
+         this.instaReq = null;
+      }
+   }
 
-	public boolean isInstaReqApi() {
-		boolean ret = false;
-		if (this.instaReq != null) {
-			ret = this.instaReq.getValue().contains("api.instagram.com");
-		}
-		return ret;
-	}
+   public Link getInstaReq() {
+      return instaReq;
+   }
 
-	// https://api.instagram.com/v1/media/popular?access_token=434730386.b13119e.20b5a4dfa7b64ad8b64578932fe2e79d
-	public String getInstaReqShort() {
-		String ret = null;
-		if (this.instaReq != null) {
-			ret = this.instaReq.getValue().replace("https://api.instagram.com/v1/", "")
-					.replaceAll("access_token=[^&]*", "");
-			if (ret.endsWith("?")) {
-				ret = ret.substring(0, ret.length() - 1);
-			}
-		}
+   public boolean isInstaReqApi() {
+      boolean ret = false;
+      if (this.instaReq != null) {
+         ret = this.instaReq.getValue().contains("api.instagram.com");
+      }
+      return ret;
+   }
 
-		return ret;
-	}
+   // https://api.instagram.com/v1/media/popular?access_token=434730386.b13119e.20b5a4dfa7b64ad8b64578932fe2e79d
+   public String getInstaReqShort() {
+      String ret = null;
+      if (this.instaReq != null) {
+         ret = this.instaReq.getValue().replace("https://api.instagram.com/v1/", "").replaceAll("access_token=[^&]*", "");
+         if (ret.endsWith("?")) {
+            ret = ret.substring(0, ret.length() - 1);
+         }
+      }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+      return ret;
+   }
 
-	public String getType() {
-		return type;
-	}
+   public void setType(String type) {
+      this.type = type;
+   }
 
-	public String getUserName() {
-		return userName;
-	}
+   public String getType() {
+      return type;
+   }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+   public String getUserName() {
+      return userName;
+   }
 
-	public GeoPt getGeopt() {
-		return geopt;
-	}
+   public void setUserName(String userName) {
+      this.userName = userName;
+   }
 
-	public void setGeopt(GeoPt geopt) {
-		this.geopt = geopt;
-	}
+   @JsonIgnore
+   public String getModifiedHuman() {
+      return TimeFormatUtils.whenInPastHuman(this.modified);
+   }
 
-	public String getLocation() {
-		return location;
-	}
+   public void setModified(Date modified) {
+      this.modified = modified;
+   }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+   public Date getModified() {
+      return modified;
+   }
+
+   @OnSave
+   void updateDate() {
+      Date now = new Date();
+      this.setModified(now);
+   }
+
+   public String getLocation() {
+      return location;
+   }
+
+   public void setLocation(String location) {
+      this.location = location;
+   }
 
 }
