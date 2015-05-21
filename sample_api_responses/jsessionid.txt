@@ -1,1 +1,0 @@
-https://instagram.com/oauth/authorize/;jsessionid=1b3semfg51y6d?client_id=c54578d4ca0142358b83561647b434cd&redirect_uri=http%3A%2F%2Flocalhost%3A8888&response_type=code&state=hookd3tb2h2geh20gfu2uf3e8b&scope=basic+relationships+comments+likes
