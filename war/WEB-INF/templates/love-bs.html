@@ -110,10 +110,10 @@
 		    </div>
 		    </div>
 		  </div>
-		<div class="row" >
+<!-- 		<div class="row" >
 			<div class='shareaholic-canvas' data-app='share_buttons' data-app-id='5500472'></div>
 		</div>
-					
+ -->					
 		</div>
 	
 
@@ -148,7 +148,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div class='shareaholic-canvas' data-app='share_buttons' data-app-id='5500472'></div> -->	
+	<!-- <div class='shareaholic-canvas' data-app='share_buttons' data-app-id='5500472'></div> --> 		
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 	<script>jQuery.browser = {};
@@ -162,5 +162,9 @@
 	})();</script>
 	<script src="/js/jquery.ba-bbq.min.js"></script>
 	<script src="/js/love.js"></script>
+#if($production)
+#include("ga.html")	
+#end
+	
 </body>
 </html>
