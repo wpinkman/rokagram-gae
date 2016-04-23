@@ -87,7 +87,6 @@ public class DeviceRollupTask implements DeferredTask {
 
     private void purgeOldLogEntries() {
         Date now = new Date();
-        System.out.println("now:" + now.toString());
 
         long longAgo = now.getTime() - (1000L * 60L * 60L * 24L * 365L);
         Date ago = new Date(longAgo);

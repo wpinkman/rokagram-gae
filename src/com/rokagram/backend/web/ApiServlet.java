@@ -141,10 +141,8 @@ public class ApiServlet extends HttpServlet {
         } catch (Exception e) {
             log.warning(e.getMessage());
         }
-        // if (!(logEntity.getType().equalsIgnoreCase("springboard") ||
-        // logEntity.getType().equalsIgnoreCase("ffmstart"))) {
+
         DAO.ofy().save().entity(logEntity);
-        // }
 
     }
 
