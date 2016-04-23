@@ -28,76 +28,76 @@ import com.rokagram.entities.WhpEntity;
 
 public class DAO {
 
-	public static final Logger log = Logger.getLogger(DAO.class.getName());
+    public static final Logger log = Logger.getLogger(DAO.class.getName());
 
-	static {
-		ObjectifyService.register(TokenEntity.class);
-		ObjectifyService.register(UserEntity.class);
-		ObjectifyService.register(UserLoveEntity.class);
-		ObjectifyService.register(TemplateEntity.class);
-		ObjectifyService.register(RokuEntity.class);
-		ObjectifyService.register(LogEntity.class);
-		ObjectifyService.register(SystemSettingsEntity.class);
-		ObjectifyService.register(ApiClientEntity.class);
-		ObjectifyService.register(EventRollupEntity.class);
-		ObjectifyService.register(RegistryEntity.class);
-		// WHP
-		ObjectifyService.register(IgPostEntity.class);
-		ObjectifyService.register(TumblrPostEntity.class);
-		ObjectifyService.register(WhpEntity.class);
+    static {
+        ObjectifyService.register(TokenEntity.class);
+        ObjectifyService.register(UserEntity.class);
+        ObjectifyService.register(UserLoveEntity.class);
+        ObjectifyService.register(TemplateEntity.class);
+        ObjectifyService.register(RokuEntity.class);
+        ObjectifyService.register(LogEntity.class);
+        ObjectifyService.register(SystemSettingsEntity.class);
+        ObjectifyService.register(ApiClientEntity.class);
+        ObjectifyService.register(EventRollupEntity.class);
+        ObjectifyService.register(RegistryEntity.class);
+        // WHP
+        ObjectifyService.register(IgPostEntity.class);
+        ObjectifyService.register(TumblrPostEntity.class);
+        ObjectifyService.register(WhpEntity.class);
 
-	}
+    }
 
-	public static Objectify ofy() {
-		return ObjectifyService.ofy();
-	}
+    public static Objectify ofy() {
+        return ObjectifyService.ofy();
+    }
 
-	public static TokenEntity loadToken(String userToken) {
-		TokenEntity userTokenEntity = null;
-		Long id = RegUtils.getId(userToken);
+    public static TokenEntity loadToken(String userToken) {
+        TokenEntity userTokenEntity = null;
+        Long id = RegUtils.getId(userToken);
 
-		if (id != null) {
-			userTokenEntity = ofy().load().key(Key.create(TokenEntity.class, id)).now();
-		}
-		return userTokenEntity;
-	}
+        if (id != null) {
+            userTokenEntity = ofy().load().key(Key.create(TokenEntity.class, id)).now();
+        }
+        return userTokenEntity;
+    }
 
-	public static Query<TokenEntity> createQueryByDeviceId(TokenEntity token) {
-		Query<TokenEntity> tokens = ofy().load().type(TokenEntity.class).filter("deviceId", token.getDeviceId());
-		return tokens;
-	}
+    public static Query<TokenEntity> createQueryByDeviceId(TokenEntity token) {
+        Query<TokenEntity> tokens = ofy().load().type(TokenEntity.class).filter("deviceId", token.getDeviceId());
+        return tokens;
+    }
 
-	private static Query<WhpEntity> getWhpOrderByDate() {
-		return ofy().load().type(WhpEntity.class).order("-announceDate");
-	}
+    private static Query<WhpEntity> getWhpOrderByDate() {
+        return ofy().load().type(WhpEntity.class).order("-announceDate");
+    }
 
-	public static List<WhpEntity> getWpaList() {
-		QueryKeys<WhpEntity> keys = getWhpOrderByDate().keys();
-		Collection<WhpEntity> list = ofy().load().keys(keys).values();
-		List<WhpEntity> wpaList = new ArrayList<WhpEntity>(list.size());
+    public static List<WhpEntity> getWpaList() {
+        QueryKeys<WhpEntity> keys = getWhpOrderByDate().keys();
+        Collection<WhpEntity> list = ofy().load().keys(keys).values();
+        List<WhpEntity> wpaList = new ArrayList<WhpEntity>(list.size());
 
-		for (WhpEntity whp : list) {
-			if (whp.getAnnounceInsta() != null && whp.getAnnounceInsta() != null) {
+        for (WhpEntity whp : list) {
+            if (whp.getAnnounceInsta() != null && whp.getAnnounceInsta() != null) {
 
-				if ((whp.getFeatureTumblr() == null && whp.getFeatureInsta() == null)
-						|| (whp.getFeatureTumblr() != null && whp.getFeatureInsta() != null)) {
+                if ((whp.getFeatureTumblr() == null && whp.getFeatureInsta() == null)
+                        || (whp.getFeatureTumblr() != null && whp.getFeatureInsta() != null)) {
 
-					wpaList.add(whp);
-				}
-			}
-		}
+                    wpaList.add(whp);
+                }
+            }
+        }
 
-		return wpaList;
-	}
+        return wpaList;
+    }
 
-	public static String getSystemSetting(SystemSettingsEnum setting) {
-		String ret = null;
+    public static String getSystemSetting(SystemSettingsEnum setting) {
+        String ret = null;
 
-		SystemSettingsEntity sse = ofy().load().type(SystemSettingsEntity.class).id(setting.toString()).now();
-
-		ret = sse.getValue();
-
-		return ret;
-	}
+        SystemSettingsEntity sse = ofy().load().type(SystemSettingsEntity.class).id(setting.toString()).now();
+        if (sse != null) {
+            ret = sse.getValue();
+        }
+        return ret;
+    }
 
 }

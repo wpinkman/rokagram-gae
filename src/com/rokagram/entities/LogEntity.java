@@ -148,4 +148,10 @@ public class LogEntity {
         this.location = location;
     }
 
+    @Override
+    public String toString() {
+        return "LogEntity [modified=" + modified + ", type=" + type + ", deviceId=" + deviceId + ", userId=" + userId
+                + ", message=" + message + ", instaReq=" + instaReq + "]";
+    }
+
 }
