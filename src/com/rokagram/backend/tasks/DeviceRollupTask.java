@@ -93,7 +93,7 @@ public class DeviceRollupTask implements DeferredTask {
         log.info("now: " + now.toString() + ", old: " + ago.toString());
 
         List<Key<LogEntity>> keys = DAO.ofy().load().type(LogEntity.class).filter("modified <", ago).order("modified")
-                .limit(100).keys().list();
+                .limit(500).keys().list();
 
         log.info("Deleting " + keys.size() + " log entries older than " + ago);
         DAO.ofy().delete().keys(keys);

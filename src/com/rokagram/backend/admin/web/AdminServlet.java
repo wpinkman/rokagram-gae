@@ -139,8 +139,10 @@ public class AdminServlet extends HttpServlet {
 
             Long rokuCount = 0L;
             Long userCount = 0L;
+            Long logCount = 0L;
             Long rokuTime = 0L;
             Long userTime = 0L;
+            Long logTime = 0L;
             com.google.appengine.api.datastore.Query statKingQuery = new com.google.appengine.api.datastore.Query(
                     "__Stat_Kind__");
             PreparedQuery prepare = datastore.prepare(statKingQuery);
@@ -180,6 +182,12 @@ public class AdminServlet extends HttpServlet {
                                 userTime = ts;
                             }
                         }
+                        if (name.equals("LogEntity")) {
+                            if (ts > logTime) {
+                                logCount = count;
+                                logTime = ts;
+                            }
+                        }
                     } else {
                         log.warning("statKindStat entity is null");
                     }
@@ -187,6 +195,7 @@ public class AdminServlet extends HttpServlet {
 
                 req.setAttribute("totalDevices", NumberFormat.getNumberInstance(Locale.US).format(rokuCount));
                 req.setAttribute("totalUsers", NumberFormat.getNumberInstance(Locale.US).format(userCount));
+                req.setAttribute("totalLogs", NumberFormat.getNumberInstance(Locale.US).format(logCount));
             } else {
                 log.warning("prepare is null");
             }
