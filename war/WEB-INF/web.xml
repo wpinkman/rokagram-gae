@@ -4,17 +4,22 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
-	<servlet>
-		<servlet-name>HomeServlet</servlet-name>
-		<servlet-class>com.rokagram.backend.web.HomeServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>HomeServlet</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
-	<!-- <servlet> <servlet-name>LoginServlet</servlet-name> <servlet-class>com.rokagram.backend.web.LoginServlet</servlet-class> 
-		</servlet> <servlet-mapping> <servlet-name>LoginServlet</servlet-name> <url-pattern>/login</url-pattern> 
-		</servlet-mapping> -->
+   <servlet>
+      <servlet-name>HomeServlet</servlet-name>
+      <servlet-class>com.rokagram.backend.web.HomeServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>HomeServlet</servlet-name>
+      <url-pattern>/</url-pattern>
+   </servlet-mapping>
+   <servlet>
+      <servlet-name>PrivacyServlet</servlet-name>
+      <servlet-class>com.rokagram.backend.web.PrivacyServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>PrivacyServlet</servlet-name>
+      <url-pattern>/privacy</url-pattern>
+   </servlet-mapping>
 	<servlet>
 		<servlet-name>LogoutServlet</servlet-name>
 		<servlet-class>com.rokagram.backend.web.LogoutServlet</servlet-class>

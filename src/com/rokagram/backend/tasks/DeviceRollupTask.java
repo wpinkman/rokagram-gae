@@ -26,7 +26,7 @@ public class DeviceRollupTask implements DeferredTask {
     @Override
     public void run() {
 
-        purgeOldLogEntries();
+        // purgeOldLogEntries();
 
         if (this.deviceId != null) {
 
