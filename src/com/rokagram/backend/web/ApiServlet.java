@@ -31,16 +31,13 @@ import com.googlecode.objectify.Ref;
 import com.rokagram.backend.GaeClientLocation;
 import com.rokagram.backend.Instagram;
 import com.rokagram.backend.ServletUtils;
-import com.rokagram.backend.Utils;
 import com.rokagram.backend.dao.DAO;
 import com.rokagram.backend.dto.InstaDailyDto;
 import com.rokagram.backend.dto.RegistryModification;
 import com.rokagram.backend.dto.TopLevelResponse;
 import com.rokagram.backend.roku.Roku;
 import com.rokagram.backend.tasks.DeviceRollupTask;
-import com.rokagram.entities.ApiClientEntity;
 import com.rokagram.entities.FeedFmSettingsEntity;
-import com.rokagram.entities.LogEntity;
 import com.rokagram.entities.RegistryEntity;
 import com.rokagram.entities.RokuEntity;
 import com.rokagram.entities.UserEntity;
@@ -72,77 +69,83 @@ public class ApiServlet extends HttpServlet {
 
     private void handleLogPost(HttpServletRequest req, HttpServletResponse resp) {
 
-        LogEntity logEntity = new LogEntity();
-
-        String devId = req.getHeader(Roku.X_ROKAGRAM_RESERVED_DEV_UNIQUE_ID);
-        logEntity.setDeviceId(devId);
-
-        Roku.updateDeviceFromRequest(req);
-
-        String currentUserId = req.getHeader(Roku.X_ROKAGRAM_RESERVED_CURRENT_USER);
-        logEntity.setUserId(currentUserId);
-
-        GaeClientLocation location = new GaeClientLocation(req);
-        logEntity.setLocation(location.toString());
-
-        try {
-            Document doc = parseXML(req.getInputStream());
-            Element root = doc.getDocumentElement();
-
-            logEntity.setType(getSimpleElementText(root, "type"));
-            logEntity.setUserName(getSimpleElementText(root, "username"));
-            logEntity.setMessage(getSimpleElementText(root, "message"));
-
-            logEntity.setInstaReqFromString(getSimpleElementText(root, "instareq"));
-
-            NodeList clientNodes = root.getElementsByTagName("client");
-
-            for (int index = 0; index < clientNodes.getLength(); index++) {
-                Element clientNode = (Element) clientNodes.item(index);
-
-                String clientId = clientNode.getAttribute("client_id");
-                int rateLimit = 0;
-                int rateLimitRemaining = 0;
-                try {
-                    rateLimit = Integer.parseInt(getSimpleElementText(clientNode, "rateLimit"));
-                    rateLimitRemaining = Integer.parseInt(getSimpleElementText(clientNode, "rateLimitRemaining"));
-                } catch (NumberFormatException nfe) {
-
-                }
-
-                ApiClientEntity client = DAO.ofy().load().type(ApiClientEntity.class).id(clientId).now();
-                boolean modified = false;
-                if (client == null) {
-                    client = new ApiClientEntity();
-                    Utils.warn("Creating new ApiClientEntity, clientId:" + clientId);
-                    client.setClient_id(clientId);
-                    modified = true;
-                }
-
-                if (rateLimit != client.getRateLimit()) {
-                    client.setRateLimit(rateLimit);
-                    modified = true;
-                }
-
-                if (rateLimitRemaining < client.getRateLimitEbb()) {
-                    client.setRateLimitEbb(rateLimitRemaining);
-                    modified = true;
-                }
-
-                if (modified) {
-                    log.info(client.toString());
-                    DAO.ofy().save().entity(client).now();
-                }
-            }
-
-        } catch (IOException e) {
-            log.warning(e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            log.warning(e.getMessage());
-        }
-
-        DAO.ofy().save().entity(logEntity);
+        // LogEntity logEntity = new LogEntity();
+        //
+        // String devId = req.getHeader(Roku.X_ROKAGRAM_RESERVED_DEV_UNIQUE_ID);
+        // logEntity.setDeviceId(devId);
+        //
+        // Roku.updateDeviceFromRequest(req);
+        //
+        // String currentUserId =
+        // req.getHeader(Roku.X_ROKAGRAM_RESERVED_CURRENT_USER);
+        // logEntity.setUserId(currentUserId);
+        //
+        // GaeClientLocation location = new GaeClientLocation(req);
+        // logEntity.setLocation(location.toString());
+        //
+        // try {
+        // Document doc = parseXML(req.getInputStream());
+        // Element root = doc.getDocumentElement();
+        //
+        // logEntity.setType(getSimpleElementText(root, "type"));
+        // logEntity.setUserName(getSimpleElementText(root, "username"));
+        // logEntity.setMessage(getSimpleElementText(root, "message"));
+        //
+        // logEntity.setInstaReqFromString(getSimpleElementText(root,
+        // "instareq"));
+        //
+        // NodeList clientNodes = root.getElementsByTagName("client");
+        //
+        // for (int index = 0; index < clientNodes.getLength(); index++) {
+        // Element clientNode = (Element) clientNodes.item(index);
+        //
+        // String clientId = clientNode.getAttribute("client_id");
+        // int rateLimit = 0;
+        // int rateLimitRemaining = 0;
+        // try {
+        // rateLimit = Integer.parseInt(getSimpleElementText(clientNode,
+        // "rateLimit"));
+        // rateLimitRemaining =
+        // Integer.parseInt(getSimpleElementText(clientNode,
+        // "rateLimitRemaining"));
+        // } catch (NumberFormatException nfe) {
+        //
+        // }
+        //
+        // ApiClientEntity client =
+        // DAO.ofy().load().type(ApiClientEntity.class).id(clientId).now();
+        // boolean modified = false;
+        // if (client == null) {
+        // client = new ApiClientEntity();
+        // Utils.warn("Creating new ApiClientEntity, clientId:" + clientId);
+        // client.setClient_id(clientId);
+        // modified = true;
+        // }
+        //
+        // if (rateLimit != client.getRateLimit()) {
+        // client.setRateLimit(rateLimit);
+        // modified = true;
+        // }
+        //
+        // if (rateLimitRemaining < client.getRateLimitEbb()) {
+        // client.setRateLimitEbb(rateLimitRemaining);
+        // modified = true;
+        // }
+        //
+        // if (modified) {
+        // log.info(client.toString());
+        // DAO.ofy().save().entity(client).now();
+        // }
+        // }
+        //
+        // } catch (IOException e) {
+        // log.warning(e.getMessage());
+        // e.printStackTrace();
+        // } catch (Exception e) {
+        // log.warning(e.getMessage());
+        // }
+        //
+        // DAO.ofy().save().entity(logEntity);
 
     }
 
